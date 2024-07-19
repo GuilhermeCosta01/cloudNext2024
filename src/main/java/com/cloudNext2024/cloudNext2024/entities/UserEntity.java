@@ -31,14 +31,13 @@ public class UserEntity {
 	@Column(nullable = false)
 	private String name;
 	
-	@NotBlank
-	private LocalDate dateBirth;
 	@Column(nullable = false, unique = true)
+	private LocalDate dateBirth;
 	
 	@NotBlank
 	@Email
-	private String email;
 	@Column(nullable = false)
+	private String email;
 	
 	@NotBlank
 	private String senha;
@@ -46,7 +45,7 @@ public class UserEntity {
 	private int plan;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	  private List<FileEntity> files;
+	private List<FileEntity> files;
 	
 }
 
