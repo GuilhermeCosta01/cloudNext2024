@@ -10,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,19 +27,25 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotBlank
 	@Column(nullable = false)
 	private String name;
 	
-	private LocalDate dateBirth;
 	@Column(nullable = false, unique = true)
-	private String email;
+	private LocalDate dateBirth;
+	
+	@NotBlank
+	@Email
 	@Column(nullable = false)
+	private String email;
+	
+	@NotBlank
 	private String senha;
 	
 	private int plan;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	  private List<FileEntity> files;
+	private List<FileEntity> files;
 	
 }
 
