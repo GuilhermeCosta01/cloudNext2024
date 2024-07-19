@@ -1,9 +1,12 @@
 package com.cloudNext2024.cloudNext2024.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +25,27 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userrepository;
-
+	
 	@PostMapping("/incluir")
-	public UserEntity incluir(@RequestBody UserEntity userr) {
+	public ResponseEntity<UserEntity> incluir(@RequestBody UserEntity userr) {
 		System.out.println(userr.getId());
 		System.out.println(userr.getName());
+		
+//		Explicacao do metodo .isAfter()
+//		data1.isAfter(data2)
+//		se data1 for antes que data2, retorna false
+//		se data1 for depois que data2, retorna true
+//		se data1 for igual a data2, retorna false
+		boolean isFutureDate = userr.getDateBirth().isAfter(LocalDate.now());
+		
+		if (isFutureDate) {
+			return ResponseEntity.badRequest().body(null);
+		}
+		
+		userr.setSenha(DigestUtils.md5DigestAsHex(userr.getSenha().getBytes()));
+		
 		UserEntity usuarioSalvo = userrepository.save(userr);
-		return usuarioSalvo;
+		return ResponseEntity.ok(usuarioSalvo);
 	}
 
 	@GetMapping("/buscar/{id}")

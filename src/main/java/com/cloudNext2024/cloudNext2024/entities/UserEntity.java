@@ -10,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,13 +27,20 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotBlank
 	@Column(nullable = false)
 	private String name;
 	
+	@NotBlank
 	private LocalDate dateBirth;
 	@Column(nullable = false, unique = true)
+	
+	@NotBlank
+	@Email
 	private String email;
 	@Column(nullable = false)
+	
+	@NotBlank
 	private String senha;
 	
 	private int plan;
