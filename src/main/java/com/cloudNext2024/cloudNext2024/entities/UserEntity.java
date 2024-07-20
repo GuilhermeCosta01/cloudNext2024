@@ -6,6 +6,8 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,9 +33,10 @@ public class UserEntity {
 	@Column(nullable = false)
 	private String name;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private LocalDate dateBirth;
 	
+	//@JsonProperty(access = JsonProperty.Access.READ_ONLY) // o acesso a essa variavel só pode ser de leitura
 	@NotBlank
 	@Email
 	@Column(nullable = false)
@@ -42,7 +45,8 @@ public class UserEntity {
 	@NotBlank
 	private String senha;
 	
-	private int plan;
+	@Enumerated(EnumType.STRING)
+	private Planos plan;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<FileEntity> files;

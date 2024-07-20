@@ -22,30 +22,30 @@ import com.cloudNext2024.cloudNext2024.repositories.UserRepository;
 
 import jakarta.validation.Valid;
 
-@RequestMapping("/user")  //definindo minha rota ou endereço;
-@RestController           // dizendo ao springboot que essa é a classe das rotas
+@RequestMapping("/user") // definindo minha rota ou endereço;
+@RestController // dizendo ao springboot que essa é a classe das rotas
 public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@PostMapping("/incluir")
-	public ResponseEntity<String> incluir(@RequestBody @Valid UserEntity userr, BindingResult bindingResult) {		
+	public ResponseEntity<String> incluir(@RequestBody @Valid UserEntity userr, BindingResult bindingResult) {
 		try {
-			
+
 			boolean isFutureDate = userr.getDateBirth().isAfter(LocalDate.now());
-			
+
 			if (isFutureDate || bindingResult.hasErrors()) {
 				throw new Exception();
 			}
-			
+
 			userr.setSenha(DigestUtils.md5DigestAsHex(userr.getSenha().getBytes()));
-			
+
 			UserEntity usuarioSalvo = userRepository.save(userr);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body("Ocorreu um erro");
 		}
-		
+
 		return ResponseEntity.ok("Cadastro realizado com sucesso");
 	}
 
@@ -71,15 +71,16 @@ public class UserController {
 	@DeleteMapping("/deletar/{id}")
 	public String deletar(@PathVariable Long id) {
 		if (!userRepository.existsById(id)) {
-			throw new RuntimeException("Funcionário não encontrado!");
+			return"Funcionário não encontrado!";
 
 		}
 		userRepository.deleteById(id);
 		return "Usuario deletado com sucesso!";
 
 	}
+
 	@GetMapping("/listar")
 	public List<UserEntity> listar() {
 		return userRepository.findAll();
-}
+	}
 }
