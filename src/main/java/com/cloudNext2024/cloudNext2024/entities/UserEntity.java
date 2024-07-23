@@ -1,7 +1,10 @@
 package com.cloudNext2024.cloudNext2024.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -39,7 +42,7 @@ public class UserEntity {
 	//@JsonProperty(access = JsonProperty.Access.READ_ONLY) // o acesso a essa variavel só pode ser de leitura
 	@NotBlank
 	@Email
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String email;
 	
 	@NotBlank
@@ -48,8 +51,9 @@ public class UserEntity {
 	@Enumerated(EnumType.STRING)
 	private Planos plan;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<FileEntity> files;
+	private List<FileEntity> files = new ArrayList<>();
 	
 }
 
