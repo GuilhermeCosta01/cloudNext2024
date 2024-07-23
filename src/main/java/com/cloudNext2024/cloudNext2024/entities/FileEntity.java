@@ -17,9 +17,10 @@ public class FileEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long fileId;
-	private String name;
+	private String fileName;
 	private double size;
-
+	private String base64File;
+	
 	@ManyToOne // many(Task) to(para) one(TodoList)
 	private UserEntity user;
 }
